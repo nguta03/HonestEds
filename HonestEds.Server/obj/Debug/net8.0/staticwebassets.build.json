@@ -1,0 +1,24 @@
+{
+  "Version": 1,
+  "Hash": "QUocI5PYPR2x7e10xamiyb94/tZZVp/i09nNEPB8R88=",
+  "Source": "HonestEds.Server",
+  "BasePath": "_content/HonestEds.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Personal Projects\\HonestEds\\honesteds.client\\honesteds.client.esproj",
+      "Version": 2,
+      "Source": "honesteds.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

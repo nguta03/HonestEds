@@ -1,0 +1,6 @@
+@HonestEds.Server_HostAddress = http://localhost:5187
+
+GET {{HonestEds.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
