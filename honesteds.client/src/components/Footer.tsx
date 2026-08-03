@@ -6,7 +6,7 @@ function Nav() {
                 <div className="footer-top">
                     <div>
                     <div className="footer-logo"><span>Honest Ed's</span></div>
-                    <p className="footer-tagline">Honest, considered reviews of Toronto's restaurants and golf courses — written for people who take both seriously.</p>
+                    <p className="footer-tagline">Honest, considered reviews of Toronto's restaurants and golf courses.</p>
                     
                     <div className="social-links">
                         <a className="social-link" href="#" aria-label="Instagram">IG</a>

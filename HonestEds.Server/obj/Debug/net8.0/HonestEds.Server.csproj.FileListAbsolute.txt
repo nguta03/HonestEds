@@ -36,3 +36,4 @@ C:\Personal Projects\HonestEds\HonestEds.Server\obj\Debug\net8.0\refint\HonestEd
 C:\Personal Projects\HonestEds\HonestEds.Server\obj\Debug\net8.0\HonestEds.Server.pdb
 C:\Personal Projects\HonestEds\HonestEds.Server\obj\Debug\net8.0\HonestEds.Server.genruntimeconfig.cache
 C:\Personal Projects\HonestEds\HonestEds.Server\obj\Debug\net8.0\ref\HonestEds.Server.dll
+C:\Personal Projects\HonestEds\HonestEds.Server\obj\Debug\net8.0\HonestEds.Server.sourcelink.json

@@ -37,7 +37,7 @@
  
     .nav-logo {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
+      font-size: 2rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--ink);
@@ -49,7 +49,7 @@
  
     .nav-links { display: flex; gap: 8px; align-items: center; }
     .nav-links a {
-      font-size: 0.875rem;
+      font-size: 1rem;
       font-weight: 500;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -90,18 +90,14 @@
       margin-bottom: 16px;
       display: flex; align-items: center; gap: 10px;
     }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
+    
  
     .featured-card {
       position: relative;
       border-radius: 12px;
       overflow: hidden;
-      height: 500px;
+      min-height: 75vh;
+      max-height: 500px;
       cursor: pointer;
       display: flex; align-items: flex-end;
     }
@@ -126,7 +122,7 @@
  
     .featured-content {
       position: relative;
-      padding: 40px 44px;
+      padding: 100px 44px 40px 44px;
       color: #fff;
       max-width: 680px;
     }
@@ -285,7 +281,7 @@
       padding-top: 14px;
       border-top: 1px solid var(--border);
     }
-    .card-author { font-size: 0.75rem; color: var(--warm-mid); }
+    .card-location { font-size: 0.75rem; color: var(--warm-mid); }
     .card-date { font-size: 0.72rem; color: #a0917f; }
  
     /* ── PAGINATION ── */

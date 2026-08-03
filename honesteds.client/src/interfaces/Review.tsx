@@ -1,4 +1,6 @@
 export interface Review{
+        id: number;
+
         title: string;
 
         fullReview: string;
