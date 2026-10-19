@@ -1,28 +1,26 @@
 import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Nav from "./components/Nav"
-import Featured from "./components/Featured"
-import Grid from "./components/Grid"
-import Footer from "./components/Footer"
+
+import Home from './pages/Home';
+import Restaurants from './pages/Restaurants';
+import GolfCourses from './pages/GolfCourses';
 
 function App() {
 
     useEffect(() => {
     }, []);
 
-    // const header = (
-
-    // );
-
 
     //https://github.com/reactjs/react.dev/blob/main/src/components/Layout/TopNav/TopNav.tsx
     return (
-        <>
-            <Nav></Nav>
-            <Featured></Featured>
-            <Grid></Grid>
-            <Footer></Footer>
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/restaurants" element={<Restaurants />} />
+                <Route path="/golf-courses" element={<GolfCourses />} />
+            </Routes>
+        </BrowserRouter>
         
     );
 }
