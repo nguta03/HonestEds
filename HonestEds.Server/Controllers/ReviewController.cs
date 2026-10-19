@@ -141,5 +141,93 @@ namespace HonestEds.Server.Controllers
                 }
             };
         }
+
+        //For list of reviews
+        [HttpGet("Reviews")]
+        public List<Review> GetReviews()
+        {
+            //call model
+            return new List<Review>
+            {
+                new Review
+                {
+                Id = 1,
+                Title = "Ridgecrest Golf & Country Club",
+                Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
+                FullReview = "",
+                Category = "Golf Course",
+                Location = "Toronto, ON",
+                Address = "",
+                DateCreated = "Mar 8, 2026",
+                Rating = 4,
+                ImageUrl = ""
+                },
+                new Review
+                {
+                Id = 2,
+                Title = "Nori & Co. Omakase Bar",
+                Tagline = "The fish quality is exceptional and the chef's vision is clear — but at this price point the inconsistency in pacing and a poorly matched sake list hold it back.",
+                FullReview = "",
+                Category = "Restaurant",
+                Location = "Cambridge, ON",
+                Address = "",
+                DateCreated = "Mar 5, 2026",
+                Rating = 5,
+                ImageUrl = ""
+                },
+                new Review
+                {
+                Id = 3,
+                Title = "Lakeview Links at Halton Hills",
+                Tagline = "Sweeping views of the escarpment, a generous clubhouse, and a layout that manages to be both scenic and genuinely challenging — a strong pick for weekend groups.",
+                FullReview = "",
+                Category = "Golf Course",
+                Location = "Halton Hills, ON",
+                Address = "",
+                DateCreated = "Feb 28, 2026",
+                Rating = 5,
+                ImageUrl = ""
+                },
+                new Review
+                {
+                Id = 1,
+                Title = "Ridgecrest Golf & Country Club",
+                Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
+                FullReview = "",
+                Category = "Golf Course",
+                Location = "Toronto, ON",
+                Address = "",
+                DateCreated = "Mar 8, 2026",
+                Rating = 4,
+                ImageUrl = ""
+                },
+                new Review
+                {
+                Id = 2,
+                Title = "Nori & Co. Omakase Bar",
+                Tagline = "The fish quality is exceptional and the chef's vision is clear — but at this price point the inconsistency in pacing and a poorly matched sake list hold it back.",
+                FullReview = "",
+                Category = "Restaurant",
+                Location = "Cambridge, ON",
+                Address = "",
+                DateCreated = "Mar 5, 2026",
+                Rating = 5,
+                ImageUrl = ""
+                },
+                new Review
+                {
+                Id = 3,
+                Title = "Lakeview Links at Halton Hills",
+                Tagline = "Sweeping views of the escarpment, a generous clubhouse, and a layout that manages to be both scenic and genuinely challenging — a strong pick for weekend groups.",
+                FullReview = "",
+                Category = "Golf Course",
+                Location = "Halton Hills, ON",
+                Address = "",
+                DateCreated = "Feb 28, 2026",
+                Rating = 1,
+                ImageUrl = ""
+                }
+            };
+        }
     }
 }
