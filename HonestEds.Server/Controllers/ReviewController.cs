@@ -144,9 +144,24 @@ namespace HonestEds.Server.Controllers
 
         //For list of reviews
         [HttpGet("Reviews")]
-        public List<Review> GetReviews()
+        public List<Review> GetReviews(string? category, string? location, double? minRating,
+            DateOnly? dateFrom, DateOnly? dateTo)
         {
+
+            // var query = _reviews.AsQueryable();
+
+            // if (!string.IsNullOrEmpty(category)) query = query.Where(r => r.Category == category);
+            // if (!string.IsNullOrEmpty(location)) query = query.Where(r => r.Location == location);
+            // if (minRating.HasValue) query = query.Where(r => r.Rating >= minRating);
+            // if (from.HasValue) query = query.Where(r => r.Date >= from);
+            // if (to.HasValue) query = query.Where(r => r.Date <= to);
+
+            // return Ok(query.ToList());
             //call model
+
+            _logger.LogInformation("Filters: {Category} {Location} {MinRating} {From} {To}",
+                category, location, minRating, dateFrom, dateTo);
+
             return new List<Review>
             {
                 new Review
@@ -190,7 +205,7 @@ namespace HonestEds.Server.Controllers
                 },
                 new Review
                 {
-                Id = 1,
+                Id = 4,
                 Title = "Ridgecrest Golf & Country Club",
                 Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
                 FullReview = "",
@@ -203,7 +218,7 @@ namespace HonestEds.Server.Controllers
                 },
                 new Review
                 {
-                Id = 2,
+                Id = 5,
                 Title = "Nori & Co. Omakase Bar",
                 Tagline = "The fish quality is exceptional and the chef's vision is clear — but at this price point the inconsistency in pacing and a poorly matched sake list hold it back.",
                 FullReview = "",
@@ -216,7 +231,7 @@ namespace HonestEds.Server.Controllers
                 },
                 new Review
                 {
-                Id = 3,
+                Id = 6,
                 Title = "Lakeview Links at Halton Hills",
                 Tagline = "Sweeping views of the escarpment, a generous clubhouse, and a layout that manages to be both scenic and genuinely challenging — a strong pick for weekend groups.",
                 FullReview = "",
