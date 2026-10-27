@@ -68,6 +68,7 @@ export default function Reviews() {
       }, [category, location, minRating, dateFrom, dateTo]);
     
   if(loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error.message}</p>;
   if (!reviews) return (null);
     return (
     <>
@@ -177,7 +178,7 @@ export default function Reviews() {
                 </td>
                 <td className="td-location">{review.location}</td>
                 <td className="td-date">{review.dateCreated}</td>
-                <td className="td-action"><a href="#" className="read-link">Read →</a></td>
+                <td className="td-action"><a href={"/" + review.id} className="read-link">Read →</a></td>
               </tr>
             ))}
           </tbody>

@@ -15,23 +15,27 @@ namespace HonestEds.Server.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public Review Get()
+        public ActionResult<Review> GetReview(int id)
         {
             //call model
-            
-            return new Review
+            // var review = _reviews.FirstOrDefault(r => r.Id == id);
+            var review = new Review
             {
-                Id = 0,
-                Title = "",
-                Tagline = "",
+                Id = 1,
+                Title = "Ridgecrest Golf & Country Club",
+                Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
                 FullReview = "",
-                Category = "",
-                Location = "",
+                Category = "Golf Course",
+                Location = "Toronto, ON",
                 Address = "",
-                DateCreated = "",
-                Rating = 5,
+                DateCreated = "Mar 8, 2026",
+                Rating = 4,
                 ImageUrl = ""
             };
+
+            if (review is null)
+                return NotFound();
+            return review;
         }
 
         //For home page

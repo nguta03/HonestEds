@@ -4,7 +4,7 @@ import './App.css';
 
 import Home from './pages/Home';
 import Reviews from './pages/Reviews';
-
+import ReviewPage from './pages/ReviewPage';
 function App() {
 
     useEffect(() => {
@@ -17,6 +17,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/reviews" element={<Reviews />} />
+                <Route path="/reviews/:id" element={<ReviewPage />} />
             </Routes>
         </BrowserRouter>
         
