@@ -47,7 +47,7 @@ export default function ReviewPage() {
     async function getReview( id : Number,
     signal?: AbortSignal){
 
-        const response = await fetch('/api/review/reviews/' + id, {signal});
+        const response = await fetch('/api/review/' + id, {signal});
         if (response.status === 404) return null;
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
         return await response.json();

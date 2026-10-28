@@ -305,7 +305,7 @@
     .pag-btn:hover { border-color: var(--ink); color: var(--ink); background: var(--cream); }
     .pag-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
     .pag-btn svg { width: 14px; height: 14px; }
- 
+    .pag-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .pag-dots { color: var(--warm-mid); font-size: 0.875rem; padding: 0 4px; }
  
     /* ── FOOTER ── */
@@ -330,7 +330,7 @@
       color: #fff;
       margin-bottom: 12px;
     }
-    .footer-logo span { color: var(--gold); font-style: italic; }
+    .footer-logo span { color: var(--accent); font-style: italic; }
     .footer-tagline { font-size: 0.85rem; line-height: 1.65; }
  
     .footer-col h4 {
@@ -350,29 +350,6 @@
       transition: color 0.2s;
     }
     .footer-col a:hover { color: #fff; }
- 
-    .social-links { display: flex; gap: 10px; margin-top:20px; }
-    .social-link {
-      width: 34px; height: 34px;
-      border: 1.5px solid rgba(255,255,255,0.15);
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      font-size: 0.8rem;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .social-link:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
- 
-    .footer-bottom {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 28px;
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.3);
-    }
-    .footer-bottom-links { display: flex; gap: 20px; }
-    .footer-bottom-links a { color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
-    .footer-bottom-links a:hover { color: rgba(255,255,255,0.65); }
  
     /* ── PLACEHOLDER IMAGES (CSS gradient) ── */
     .img-placeholder-1 { background: linear-gradient(135deg, #8b6a42 0%, #c4894e 50%, #7a5535 100%); }
@@ -646,6 +623,14 @@
       color: var(--warm-mid);
     }
     .empty-state p { font-size: 0.95rem; margin-top: 8px; }
+
+    /* ── TABLE ERROR ── */
+    .table-message {
+      padding: 64px 48px;
+      text-align: center;
+      color: var(--warm-mid);
+    }
+    .table-message.error { color: var(--accent); }
  
  
     @media (max-width: 900px) {

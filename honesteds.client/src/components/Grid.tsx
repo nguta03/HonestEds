@@ -55,56 +55,56 @@ function Grid() {
                     </article>
                     ))}
                 
-                    </div>
-                </section>
-                
-                <div className="pagination-section">
-                    <button
-                        className="pag-btn"
-                        aria-label="Previous"
-                        disabled={currentPage === 1}
-                        onClick={() => setCurrentPage(currentPage - 1)}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                        >
-                            <path d="M15 18l-6-6 6-6" />
-                        </svg>
-                    </button>
-
-                    {[...Array(totalPages)].map((_, index) => (
-                        <button
-                            key={index + 1}
-                            className={`pag-btn ${
-                                currentPage === index + 1 ? "active" : ""
-                            }`}
-                            onClick={() => setCurrentPage(index + 1)}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
-
-                    <button
-                        className="pag-btn"
-                        aria-label="Next"
-                        disabled={currentPage === totalPages}
-                        onClick={() => setCurrentPage(currentPage + 1)}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                        >
-                            <path d="M9 18l6-6-6-6" />
-                        </svg>
-                    </button>
                 </div>
+            </section>
+                
+            <div className="pagination-section">
+                <button
+                    className="pag-btn"
+                    aria-label="Previous"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                    >
+                        <path d="M15 18l-5-5 5-5" />
+                    </svg>
+                </button>
+
+                {[...Array(totalPages)].map((_, index) => (
+                    <button
+                        key={index + 1}
+                        className={`pag-btn ${
+                            currentPage === index + 1 ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentPage(index + 1)}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+
+                <button
+                    className="pag-btn"
+                    aria-label="Next"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                    >
+                        <path d="M9 18l5-5-5-5" />
+                    </svg>
+                </button>
+            </div>
         </>
     );
 

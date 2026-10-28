@@ -32,7 +32,6 @@ namespace HonestEds.Server.Controllers
                 Rating = 4,
                 ImageUrl = ""
             };
-
             if (review is null)
                 return NotFound();
             return review;
