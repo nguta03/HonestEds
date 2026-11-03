@@ -14,6 +14,7 @@ type SortKey = 'rating' | 'location' | 'date';
 
 export default function Reviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [locations, setLocations] = useState<string[]>([]);
 
   const [searchParams, setSearchParams] = useSearchParams();
   function updateParam(key: string, value: string) {
@@ -110,6 +111,12 @@ export default function Reviews() {
     const controller = new AbortController();
     setLoading(true);
     setError(null);
+
+    getLocations(controller.signal)
+    .then(setLocations)
+    .catch(err => {
+      if (err instanceof Error && err.name !== 'AbortError') console.error(err);
+    });
     
     getReviews({ category, location, minRating, dateFrom, dateTo }, controller.signal)
       .then(setReviews)
@@ -256,10 +263,12 @@ export default function Reviews() {
           <select value={location}
           onChange={e => updateParam('location', e.target.value)}>
             <option value="">All Locations</option>
-            <option value="Toronto, ON">Toronto, ON</option>
-            <option value="Mississauga, ON">Mississauga, ON</option>
-            <option value="Halton Hills, ON">Halton Hills, ON</option>
-            <option value="Oakville, ON">Oakville, ON</option>
+            {location && !locations.includes(location) && (
+              <option value={location}>{location}</option>
+            )}
+            {locations.map(loc => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
           </select>
         </div>
       
@@ -330,5 +339,11 @@ export default function Reviews() {
       return await response.json();
       
       
+  }
+
+  async function getLocations(signal?: AbortSignal): Promise<string[]> {
+    const response = await fetch('/api/review/locations', { signal });
+    if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+    return response.json();
   }
 }

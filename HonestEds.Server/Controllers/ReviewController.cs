@@ -247,5 +247,14 @@ namespace HonestEds.Server.Controllers
                 }
             };
         }
+
+        //Locations for filtering
+        [HttpGet("locations")]
+        public ActionResult<IEnumerable<string>> GetLocations()
+        {
+            string[] locations = ["Halton Hills, ON", "Mississauga, ON", "Toronto, ON", "Cambridge, ON", "Oakville, ON"];
+
+            return Ok(locations.Order());
+        }
     }
 }
