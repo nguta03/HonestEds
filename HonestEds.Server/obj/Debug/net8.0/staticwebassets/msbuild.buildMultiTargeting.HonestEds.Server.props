@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\HonestEds.Server.props" />
-</Project>
