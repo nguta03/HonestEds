@@ -28,7 +28,16 @@ function Grid() {
                     {currentReviews.map(review => (
                         <article className="review-card" key={review.id}>
                             <div className="card-img-wrap">
-                                <div className="img-placeholder-2">⛳</div>
+                                {review.imageUrl ? (
+                                    <img
+                                        className="hero-img"
+                                        src={review.imageUrl}
+                                        alt={review.title ?? 'Review photo'}
+                                        loading="lazy"
+                                    />
+                                ) : (
+                                    <div className="img-placeholder-2" />
+                                )}
                                 <span className="card-category">{review.category}</span>
                             </div>
                             <div className="card-body">

@@ -76,8 +76,17 @@ export default function ReviewPage() {
             
             <section className="review-hero">
                 <figure>
-                    <div className="hero-img" role="img" aria-label="The dining room at Maison Dorée"></div>
-                    <figcaption>The main dining room at Maison Dorée, set for dinner service.</figcaption>
+                    {review.imageUrl ? (
+                        <img
+                            className="hero-img"
+                            src={review.imageUrl}
+                            alt={review.title ?? 'Review photo'}
+                            loading="lazy"
+                        />
+                    ) : (
+                        <div className="hero-img img-placeholder-1" />
+                    )}
+                    <figcaption>{review.tagline}</figcaption>
                 </figure>
             </section>
             

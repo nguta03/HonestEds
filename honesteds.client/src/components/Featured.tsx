@@ -15,8 +15,16 @@ function Featured() {
             <section className="featured-section">
                 <p className="section-label">Featured Review</p>
                 <div className="featured-card">
-                    <div className="img-placeholder-1 hero-img">🍽️</div>
-                    <div className="hero-gradient"></div>
+                    {review.imageUrl ? (
+                        <img
+                            className="hero-img"
+                            src={review.imageUrl}
+                            alt={review.title ?? 'Review photo'}
+                        />
+                    ) : (
+                        <div className="hero-img img-placeholder-1" />
+                    )}
+                    
                     <div className="featured-content">
                         <span className="featured-badge">{review.category}</span>
                         <h1 className="featured-title">{review.title}</h1>
