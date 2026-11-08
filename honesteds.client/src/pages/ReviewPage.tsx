@@ -69,7 +69,7 @@ export default function ReviewPage() {
                 <span className="meta-sep"></span>
                 <span>{review.location}</span>
                 <span className="meta-sep"></span>
-                <time >{review.dateCreated}</time>
+                <time >{new Date(review.dateCreated + 'T00:00:00').toLocaleDateString('en-CA', { dateStyle: 'medium' })}</time>
                 <span className="meta-sep"></span>
                 </div>
             </header>

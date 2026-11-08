@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace HonestEds.Server.Controllers
 {
@@ -8,253 +10,120 @@ namespace HonestEds.Server.Controllers
     {
 
         private readonly ILogger<ReviewController> _logger;
+        private readonly AppDbContext _db;
+        private readonly IMemoryCache _cache;
 
-        public ReviewController(ILogger<ReviewController> logger)
+        public ReviewController(ILogger<ReviewController> logger, AppDbContext db, IMemoryCache cache)
         {
             _logger = logger;
+            _db = db;
+            _cache = cache;
         }
 
+        
+
         [HttpGet("{id:int}")]
-        public ActionResult<Review> GetReview(int id)
+        public async Task<ActionResult<Review>> GetReview(int id)
         {
-            //call model
-            // var review = _reviews.FirstOrDefault(r => r.Id == id);
-            var review = new Review
-            {
-                Id = 1,
-                Title = "Ridgecrest Golf & Country Club",
-                Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Toronto, ON",
-                Address = "",
-                DateCreated = "Mar 8, 2026",
-                Rating = 4,
-                ImageUrl = ""
-            };
-            if (review is null)
-                return NotFound();
+            var review = await _db.Reviews.FindAsync(id);
+            
+            if (review is null) return NotFound();
             return review;
         }
 
         //For home page
         [HttpGet("Featured")]
-        public Review GetFeature()
+        public async Task<ActionResult<Review>> GetFeatured()
         {
-            //call model
-            return new Review
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+            var review = await _cache.GetOrCreateAsync($"featured:{today}", async entry =>
             {
-                Id = 4,
-                Title = "Maison Dorée: Where Classical French Cooking Gets Its Crown Back",
-                Tagline = "A quietly extraordinary experience tucked into a Victorian townhouse — the duck confit alone justifies the reservation, but it's the effortless service and unhurried pace that linger long after the last bite.",
-                FullReview = "",
-                Category = "Restaurant",
-                Location = "Toronto, ON",
-                Address = "",
-                DateCreated = "March 10, 2026",
-                Rating = 4.5,
-                ImageUrl = ""
-            };
+                // Expire at the next UTC midnight, when the featured review changes
+                entry.AbsoluteExpiration = new DateTimeOffset(DateTime.UtcNow.Date.AddDays(1), TimeSpan.Zero);
+
+                var withImages = _db.Reviews.Where(r => r.ImageUrl != null);
+
+                var count = await withImages.CountAsync();
+                if (count == 0)
+                {
+                    // Don't remember "nothing to feature" for long
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
+                    return null;
+                }
+
+                var index = today.DayNumber % count;
+
+                return await withImages
+                    .OrderBy(r => r.Id)
+                    .Skip(index)
+                    .FirstAsync();
+            });
+
+            return review is null ? NotFound() : review;
         }
 
         //For home page
         [HttpGet("Latest")]
-        public List<Review> GetLatest()
+        public async Task<ActionResult<List<Review>>> GetLatest()
         {
-            //call model
-            return new List<Review>
+            var result = await _cache.GetOrCreateAsync("latest", async entry =>
             {
-                new Review
-                {
-                Id = 1,
-                Title = "Ridgecrest Golf & Country Club",
-                Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Toronto, ON",
-                Address = "",
-                DateCreated = "Mar 8, 2026",
-                Rating = 4,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 2,
-                Title = "Nori & Co. Omakase Bar",
-                Tagline = "The fish quality is exceptional and the chef's vision is clear — but at this price point the inconsistency in pacing and a poorly matched sake list hold it back.",
-                FullReview = "",
-                Category = "Restaurant",
-                Location = "Cambridge, ON",
-                Address = "",
-                DateCreated = "Mar 5, 2026",
-                Rating = 5,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 3,
-                Title = "Lakeview Links at Halton Hills",
-                Tagline = "Sweeping views of the escarpment, a generous clubhouse, and a layout that manages to be both scenic and genuinely challenging — a strong pick for weekend groups.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Halton Hills, ON",
-                Address = "",
-                DateCreated = "Feb 28, 2026",
-                Rating = 5,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 1,
-                Title = "Ridgecrest Golf & Country Club",
-                Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Toronto, ON",
-                Address = "",
-                DateCreated = "Mar 8, 2026",
-                Rating = 4,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 2,
-                Title = "Nori & Co. Omakase Bar",
-                Tagline = "The fish quality is exceptional and the chef's vision is clear — but at this price point the inconsistency in pacing and a poorly matched sake list hold it back.",
-                FullReview = "",
-                Category = "Restaurant",
-                Location = "Cambridge, ON",
-                Address = "",
-                DateCreated = "Mar 5, 2026",
-                Rating = 5,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 3,
-                Title = "Lakeview Links at Halton Hills",
-                Tagline = "Sweeping views of the escarpment, a generous clubhouse, and a layout that manages to be both scenic and genuinely challenging — a strong pick for weekend groups.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Halton Hills, ON",
-                Address = "",
-                DateCreated = "Feb 28, 2026",
-                Rating = 1,
-                ImageUrl = ""
-                }
-            };
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+
+                return await _db.Reviews
+                .AsNoTracking()
+                .OrderByDescending(r => r.DateCreated)
+                .ThenByDescending(r => r.Id)
+                .Take(9)
+                .ToListAsync();
+
+            // could return only what card needs
+            });
+
+            return result!;
         }
 
         //For list of reviews
         [HttpGet("Reviews")]
-        public List<Review> GetReviews(string? category, string? location, double? minRating,
+        public async Task<List<Review>> GetReviews(string? category, string? location, double? minRating,
             DateOnly? dateFrom, DateOnly? dateTo)
         {
 
-            // var query = _reviews.AsQueryable();
+            var query = _db.Reviews.AsNoTracking().AsQueryable();
 
-            // if (!string.IsNullOrEmpty(category)) query = query.Where(r => r.Category == category);
-            // if (!string.IsNullOrEmpty(location)) query = query.Where(r => r.Location == location);
-            // if (minRating.HasValue) query = query.Where(r => r.Rating >= minRating);
-            // if (from.HasValue) query = query.Where(r => r.Date >= from);
-            // if (to.HasValue) query = query.Where(r => r.Date <= to);
+            if (!string.IsNullOrEmpty(category)) query = query.Where(r => r.Category == category);
+            if (!string.IsNullOrEmpty(location)) query = query.Where(r => r.Location == location);
+            if (minRating.HasValue) query = query.Where(r => r.Rating >= minRating);
+            if (dateFrom.HasValue) query = query.Where(r => r.DateCreated >= dateFrom);
+            if (dateTo.HasValue) query = query.Where(r => r.DateCreated <= dateTo);
 
-            // return Ok(query.ToList());
-            //call model
-
-            _logger.LogInformation("Filters: {Category} {Location} {MinRating} {From} {To}",
-                category, location, minRating, dateFrom, dateTo);
-
-            return new List<Review>
-            {
-                new Review
-                {
-                Id = 1,
-                Title = "Ridgecrest Golf & Country Club",
-                Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Toronto, ON",
-                Address = "",
-                DateCreated = "Mar 8, 2026",
-                Rating = 4,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 2,
-                Title = "Nori & Co. Omakase Bar",
-                Tagline = "The fish quality is exceptional and the chef's vision is clear — but at this price point the inconsistency in pacing and a poorly matched sake list hold it back.",
-                FullReview = "",
-                Category = "Restaurant",
-                Location = "Cambridge, ON",
-                Address = "",
-                DateCreated = "Mar 5, 2026",
-                Rating = 5,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 3,
-                Title = "Lakeview Links at Halton Hills",
-                Tagline = "Sweeping views of the escarpment, a generous clubhouse, and a layout that manages to be both scenic and genuinely challenging — a strong pick for weekend groups.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Halton Hills, ON",
-                Address = "",
-                DateCreated = "Feb 28, 2026",
-                Rating = 5,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 4,
-                Title = "Ridgecrest Golf & Country Club",
-                Tagline = "Impeccably maintained fairways and a back nine that punishes overconfidence — this is a course that rewards patience and local knowledge above all else.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Toronto, ON",
-                Address = "",
-                DateCreated = "Mar 8, 2026",
-                Rating = 4,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 5,
-                Title = "Nori & Co. Omakase Bar",
-                Tagline = "The fish quality is exceptional and the chef's vision is clear — but at this price point the inconsistency in pacing and a poorly matched sake list hold it back.",
-                FullReview = "",
-                Category = "Restaurant",
-                Location = "Cambridge, ON",
-                Address = "",
-                DateCreated = "Mar 5, 2026",
-                Rating = 5,
-                ImageUrl = ""
-                },
-                new Review
-                {
-                Id = 6,
-                Title = "Lakeview Links at Halton Hills",
-                Tagline = "Sweeping views of the escarpment, a generous clubhouse, and a layout that manages to be both scenic and genuinely challenging — a strong pick for weekend groups.",
-                FullReview = "",
-                Category = "Golf Course",
-                Location = "Halton Hills, ON",
-                Address = "",
-                DateCreated = "Feb 28, 2026",
-                Rating = 1,
-                ImageUrl = ""
-                }
-            };
+            return await query.ToListAsync();
+            
         }
 
         //Locations for filtering
         [HttpGet("locations")]
-        public ActionResult<IEnumerable<string>> GetLocations()
-        {
-            string[] locations = ["Halton Hills, ON", "Mississauga, ON", "Toronto, ON", "Cambridge, ON", "Oakville, ON"];
+        public async Task<ActionResult<List<string>>> GetLocations() {
+            var result = await _cache.GetOrCreateAsync("locations", async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
 
-            return Ok(locations.Order());
+                return await _db.Reviews
+                    .Select(r => r.Location)
+                    .Distinct()
+                    .OrderBy(l => l)
+                    .ToListAsync();
+            });
+
+            return result!;
         }
+
+        //Remove cache when editing db
+        //_cache.Remove("latest");
+        //_cache.Remove($"featured:{today}");
+        //_cache.Remove("locations");
+
+
     }
 }

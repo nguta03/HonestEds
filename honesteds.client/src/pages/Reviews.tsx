@@ -181,7 +181,7 @@ export default function Reviews() {
                     <span className="rating-num">{review.rating.toFixed(1)}</span>
                   </td>
                   <td className="td-location">{review.location}</td>
-                  <td className="td-date">{review.dateCreated}</td>
+                  <td className="td-date">{new Date(review.dateCreated + 'T00:00:00').toLocaleDateString('en-CA', { dateStyle: 'medium' })}</td>
                   <td className="td-action"><a href={"/reviews/" + review.id} className="read-link">Read →</a></td>
                 </tr>
               ))}

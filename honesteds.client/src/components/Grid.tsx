@@ -49,7 +49,7 @@ function Grid() {
                             <p className="card-excerpt">{review.tagline}</p>
                             <div className="card-footer">
                                 <span className="card-location">{review.location}</span>
-                                <span className="card-date">{review.dateCreated}</span>
+                                <span className="card-date">{new Date(review.dateCreated + 'T00:00:00').toLocaleDateString('en-CA', { dateStyle: 'medium' })}</span>
                             </div>
                         </div>
                     </article>
