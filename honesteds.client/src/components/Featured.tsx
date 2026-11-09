@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Review } from '../interfaces/Review';
+import { Link } from 'react-router-dom';
 
 function Featured() {
     const [review, setReview] = useState<Review>();
@@ -8,7 +9,7 @@ function Featured() {
         getFeature().finally(() => setLoading(false));
         }, []);
     
-    if(loading) return <p>Loading...</p>
+    if(loading) return (<div className="skeleton featured-skeleton" aria-hidden="true" />)
     if (!review) return null;
     return (
         <>
@@ -38,12 +39,12 @@ function Featured() {
                             {review.tagline}
                         </p>
                         <div className="featured-meta">{new Date(review.dateCreated + 'T00:00:00').toLocaleDateString('en-CA', { dateStyle: 'medium' })} &nbsp;·&nbsp; {review.location}</div>
-                            <a href={"/reviews/" + review.id} className="btn-read">
+                            <Link to={"/reviews/" + review.id} className="btn-read">
                                 Read Review
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                                 </svg>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </section>

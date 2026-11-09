@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Review } from '../interfaces/Review';
-// <card></card>
-// <card></card>
-// <card></card>
-//<pagination></pagination>         Note: change pagination to backend
+import { Link } from 'react-router-dom';
 
 function Grid() {
     const [reviews, setReviews] = useState<Review[]>([]);
@@ -18,14 +15,14 @@ function Grid() {
     const totalPages = Math.ceil(reviews.length / reviewsPerPage);
     const currentReviews = reviews.slice((currentPage - 1) * reviewsPerPage, currentPage * reviewsPerPage)
 
-    if(loading) return <p>Loading...</p>
     if (!reviews) return null;
     return (
         <>
             <section className="reviews-section">
                 <p className="section-label">Latest Reviews</p>
                 <div className="reviews-grid">
-                    {currentReviews.map(review => (
+                    {loading ? Array.from({ length: 9 }, (_, i) => <CardSkeleton key={i} />)
+                    : currentReviews.map(review => (
                         <article className="review-card" key={review.id}>
                             <div className="card-img-wrap">
                                 {review.imageUrl ? (
@@ -41,7 +38,7 @@ function Grid() {
                                 <span className="card-category">{review.category}</span>
                             </div>
                             <div className="card-body">
-                                <h2 className="card-title">{review.title}</h2>
+                                <h2 className="card-title"><Link to={"/reviews/" + review.id} className="card-link">{review.title}</Link></h2>
                                 <div className="card-stars">
                                     {[...Array(Math.ceil(review.rating))].map((_, i) => {
                                         const starNum = i + 1;
@@ -123,6 +120,20 @@ function Grid() {
             const data: Review[] = await response.json();
             setReviews(data);
         }
+    }
+
+    function CardSkeleton() {
+        return (
+            <div className="card-skeleton" aria-hidden="true">
+            <div className="skeleton sk-img" />
+            <div className="sk-body">
+                <div className="skeleton sk-title" />
+                <div className="skeleton sk-stars" />
+                <div className="skeleton sk-line" />
+                <div className="skeleton sk-line short" />
+            </div>
+            </div>
+        );
     }
 }
 

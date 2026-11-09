@@ -204,7 +204,16 @@
       cursor: pointer;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       display: flex; flex-direction: column;
+      position: relative;
     }
+
+    .card-link { color: inherit; text-decoration: none; }
+    .card-link::after {
+      content: '';
+      position: absolute;
+      inset: 0;           /* stretches the click area over the whole card */
+    }
+
     .review-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 16px 40px rgba(26,22,18,0.1);
@@ -737,6 +746,46 @@
       font-family: 'Quintessential', serif;
       font-size: 1.2rem; line-height: 1.5;
       color: #fff; margin: 0;
+    }
+
+    /* ── LOADING STATES ── */
+
+    /* Skeleton blocks with a soft shimmer */
+    .skeleton {
+      background: linear-gradient(90deg, #efe8dc 25%, #f7f2ea 50%, #efe8dc 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+
+    /* Featured card placeholder, same size as the real one */
+    .featured-skeleton { height: 500px; border-radius: 12px; }
+
+    /* Review card placeholder, same box as .review-card */
+    .card-skeleton {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .card-skeleton .sk-img   { height: 200px; border-radius: 0; }
+    .card-skeleton .sk-body  { padding: 22px 24px 26px; display: grid; gap: 12px; }
+    .card-skeleton .sk-title { height: 20px; width: 75%; }
+    .card-skeleton .sk-stars { height: 14px; width: 40%; }
+    .card-skeleton .sk-line  { height: 12px; }
+    .card-skeleton .sk-line.short { width: 60%; }
+
+    @media (max-width: 600px) {
+      .featured-skeleton { height: 380px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner, .skeleton { animation: none; }
+      .loading-note { animation: none; opacity: 1; }
     }
  
     @media (max-width: 900px) {

@@ -2,7 +2,7 @@ import Nav from "../components/Nav"
 import Footer from "../components/Footer"
 import type { Review } from '../interfaces/Review';
 import { useEffect, useState, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 export interface ReviewFilters {
   category?: 'restaurant' | 'golf' | null;
   location?: string | null;
@@ -182,7 +182,7 @@ export default function Reviews() {
                   </td>
                   <td className="td-location">{review.location}</td>
                   <td className="td-date">{new Date(review.dateCreated + 'T00:00:00').toLocaleDateString('en-CA', { dateStyle: 'medium' })}</td>
-                  <td className="td-action"><a href={"/reviews/" + review.id} className="read-link">Read →</a></td>
+                  <td className="td-action"><Link to={"/reviews/" + review.id} className="read-link">Read →</Link></td>
                 </tr>
               ))}
             </tbody>
